@@ -250,10 +250,43 @@ namespace privado_backend.Controllers
                 return BadRequest(new { valid = false, error = ex.Message });
             }
         }
-       
-     
+        // GET: api/usuarios/buscar?q=ale
+        [HttpGet("buscar")]
+        public async Task<ActionResult<IEnumerable<usuario>>> Buscar(
+            [FromQuery] string q,
+            [FromQuery] int? estado = 1,      // null = no filtrar por estado, 1 = activos (default)
+            [FromQuery] int skip = 0,
+            [FromQuery] int take = 50
+        )
+        {
+            if (string.IsNullOrWhiteSpace(q))
+                return BadRequest("Debe enviar el parámetro 'q'.");
 
-        
+            q = q.Trim();
+
+            // Búsqueda case-insensitive con LIKE (aprovecha índices si existen)
+            var query = _context.usuario
+                .AsNoTracking()
+                .Where(u =>
+                    EF.Functions.Like(u.nombres ?? "", $"%{q}%") ||
+                    EF.Functions.Like(u.apellidos ?? "", $"%{q}%")
+                );
+
+            if (estado.HasValue)
+                query = query.Where(u => u.estado == estado);
+
+            var results = await query
+                .OrderBy(u => u.nombres).ThenBy(u => u.apellidos)
+                .Skip(Math.Max(0, skip))
+                .Take(Math.Clamp(take, 1, 200))
+                .ToListAsync();
+
+            return Ok(results);
+        }
+
+
+
+
 
         private bool usuarioExists(int id) => _context.usuario.Any(e => e.id == id);
     }

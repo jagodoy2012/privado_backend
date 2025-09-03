@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using privado_backend.Models;
+using privado_backend.Models.SistemasPrivado;
 
 namespace privado_backend.Data
 {
@@ -53,5 +54,14 @@ namespace privado_backend.Data
                 e.HasKey(x => x.id);
             });
         }
+        public DbSet<privado_backend.Models.SistemasPrivado.USUARIOS_TIENDAS> USUARIOS_TIENDAS { get; set; } = default!;
+        public DbSet<privado_backend.Models.SistemasPrivado.TRANSACCION_COMPRAS_VENTAS_DETALLE> TRANSACCION_COMPRAS_VENTAS_DETALLE { get; set; } = default!;
+        public DbSet<privado_backend.Models.SistemasPrivado.PRODUCTO> PRODUCTO { get; set; } = default!;
+        public DbSet<privado_backend.Models.SistemasPrivado.TRANSACCIONES_MOVIMIENTOS> TRANSACCIONES_MOVIMIENTOS { get; set; } = default!;
+        public DbSet<privado_backend.Models.SistemasPrivado.INVENTARIO> INVENTARIO { get; set; } = default!;
+        public DbSet<privado_backend.Models.SistemasPrivado.TRANSACCIONES_COMPRAS_VENTAS> TRANSACCIONES_COMPRAS_VENTAS { get; set; } = default!;
+        public DbSet<privado_backend.Models.SistemasPrivado.TRANSACCIONES> TRANSACCIONES { get; set; } = default!;
+        public DbSet<privado_backend.Models.SistemasPrivado.TRANSACCION_TIPO> TRANSACCION_TIPO { get; set; } = default!;
+        public DbSet<privado_backend.Models.SistemasPrivado.TIENDAS> TIENDAS { get; set; } = default!;
     }
 }
